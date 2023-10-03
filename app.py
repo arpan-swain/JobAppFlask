@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -23,8 +24,14 @@ def index():
         first_name = request.form["first_name"]
         last_name = request.form["last_name"]
         email = request.form["email"]
-        date = request.form["date"]
+        not_date_obj = request.form["date"]
+        date = datetime.strptime(not_date_obj, "%Y-%m-%d")
         occupation = request.form["occupation"]
+
+        form = Form(first_name =first_name, last_name = last_name, email= email,date=date, occupation =occupation)
+
+        db.session.add(form)
+        db.session.commit()
 
     return render_template("index.html")
 
